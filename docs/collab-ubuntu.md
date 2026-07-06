@@ -38,16 +38,29 @@ scripts/ubuntu-dispatch.sh "<self-contained task prompt>" [branch]
 # parallel lanes (independent worktrees on Ubuntu):
 scripts/ubuntu-dispatch-lane.sh <lane> "<task>" [branch]
 ```
-Steps it runs: push `main` → ubuntu · checkout a fresh branch off `origin/main` ·
-`npm install` · `claude -p` headless (acceptEdits, model `sonnet` — override with
-`MODEL=opus …`) · `npm run lint` + `npm run build` · commit + push the branch ·
-`git fetch ubuntu` back to Mac.
+The remote runner is launched **detached (`setsid`)**, so it survives an ssh
+disconnect or a killed dispatch — long `claude -p` runs are never orphaned and
+the commit + push tail always executes. Dispatch returns immediately; poll with:
+```bash
+scripts/ubuntu-status.sh <branch>            # tail log + RUNNING/COMPLETE
+scripts/ubuntu-status.sh <branch> --fetch    # when COMPLETE, fetch to Mac
+```
+Runner steps: checkout a fresh branch off `origin/main` · `claude -p` headless
+(acceptEdits, model `sonnet` — override with `MODEL=opus …`) · `npm install` ·
+`npm run lint` + `npm run build` + `npm run test` · commit + push the branch ·
+`touch ~/.cpd-done-<branch>`.
 
 Then the **leader reviews and merges** (never auto-merge):
 ```bash
+git fetch ubuntu
 git diff main..ubuntu/<branch>
-git merge ubuntu/<branch>     # then: git push origin main
+git merge ubuntu/<branch>     # then: git push origin main ; git push ubuntu main
 ```
+
+> Why detached: the Mac tool/ssh session has a ~10-min ceiling. A foreground
+> dispatch that exceeds it gets SIGHUP'd — `claude` orphans on but the shell
+> running commit/push dies, leaving work uncommitted. `setsid` decouples the run
+> from the ssh session so it completes regardless; the Mac just polls.
 
 Permission mode is fixed to **`acceptEdits`** — the worker may create/edit
 **files only**, never run arbitrary shell. The script (not Claude) runs
