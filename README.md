@@ -8,6 +8,9 @@ Built as a portfolio/showoff piece: dark-mode-first side panel UI, live accent
 theming that tints itself with the palette you just extracted, and smooth
 micro-interactions throughout.
 
+**Docs:** [User guide](docs/usage.md) · [Architecture](docs/architecture.md) ·
+[Collaboration workflow](docs/collab-ubuntu.md)
+
 ## Features
 
 | Area | What it does |
