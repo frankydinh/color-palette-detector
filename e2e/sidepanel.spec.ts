@@ -9,17 +9,22 @@ let context: BrowserContext
 let extId: string
 
 test.beforeAll(async () => {
+  // Use Playwright's BUNDLED Chromium (not channel:'chrome') — stable Chrome
+  // 137+ gates --load-extension, so system Chrome won't load the unpacked
+  // extension. Run under xvfb (headless:false) since MV3 extensions need a
+  // headed context. Requires `npx playwright install chromium`.
   context = await chromium.launchPersistentContext('', {
-    channel: 'chrome',
     headless: false,
     args: [
       `--disable-extensions-except=${EXT_PATH}`,
       `--load-extension=${EXT_PATH}`,
       '--no-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
     ],
   })
   let [sw] = context.serviceWorkers()
-  if (!sw) sw = await context.waitForEvent('serviceworker')
+  if (!sw) sw = await context.waitForEvent('serviceworker', { timeout: 30000 })
   extId = new URL(sw.url()).host
 })
 

@@ -57,6 +57,23 @@ npm run build      # tsc --noEmit && vite build → dist/
 
 Load the `dist/` folder as an unpacked extension.
 
+## Testing
+
+```bash
+npm test          # unit tests (Vitest) — src/lib logic + component/DOM tests
+npm run test:e2e  # end-to-end (Playwright) — loads the built extension, drives the side panel
+```
+
+- **Unit** (Vitest): pure color logic (`src/lib`), plus jsdom tests for the
+  scanner, storage, and key components. Fast, run anywhere.
+- **E2E** (Playwright): loads the unpacked extension in a real browser and
+  exercises upload → palette → harmony → contrast. Requirements:
+  - build first (`npm run build`) so `dist/` exists;
+  - `npx playwright install chromium` — the test uses Playwright's **bundled
+    Chromium**, not system Chrome (stable Chrome 137+ gates `--load-extension`);
+  - on a headless machine, wrap it: `xvfb-run -a npm run test:e2e` (MV3
+    extensions require a headed context).
+
 ## Regenerate icons
 
 ```bash
