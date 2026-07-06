@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "culori": "^4.0.1",
@@ -40,6 +41,7 @@
     "vitest": "^2.1.0",
     "jsdom": "^25.0.0",
     "@testing-library/react": "^16.0.0",
-    "@testing-library/dom": "^10.4.0"
+    "@testing-library/dom": "^10.4.0",
+    "@playwright/test": "^1.47.0"
   }
 }

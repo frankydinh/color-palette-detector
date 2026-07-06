@@ -5,3 +5,6 @@ dist
 .vite
 npm-debug.log*
 yarn-error.log*
+test-results/
+playwright-report/
+.auth/
