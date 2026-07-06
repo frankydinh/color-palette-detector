@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: #6366f1;
+  --accent-fg: #ffffff;
+  --accent-soft: rgba(99, 102, 241, 0.15);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 340px;
+}
+
+body {
+  @apply bg-surface text-content font-sans antialiased;
+}
+
+/* Thin, dark-friendly scrollbar. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2e3a transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #2a2e3a;
+  border-radius: 8px;
+}
+
+/* Respect reduced-motion: disable all animation/transition. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Focus ring uses the live accent. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
