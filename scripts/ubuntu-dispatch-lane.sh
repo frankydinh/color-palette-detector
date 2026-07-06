@@ -37,11 +37,13 @@ ssh -o BatchMode=yes "$HOST" "
   cd \"\$WT\"
   git fetch -q origin
   git checkout -q -B '$BRANCH' origin/main
-  npm install --prefer-offline --no-audit --no-fund >/dev/null 2>&1 || npm install --no-audit --no-fund
   TASK=\"\$(printf '%s' '$TASK_B64' | base64 -d)\"
   claude -p \"\$TASK\" --permission-mode acceptEdits --model '$MODEL'
-  echo '--- lint ---';  npm run -s lint  || true
+  # install AFTER edits so any new devDeps (e.g. a test runner) are picked up
+  npm install --no-audit --no-fund || true
+  echo '--- lint ---';  npm run -s lint || true
   echo '--- build ---'; npm run -s build || true
+  echo '--- test ---';  npm run -s test --if-present || true
   git add -A
   if git diff --cached --quiet; then echo 'NO_CHANGES — nothing committed'; exit 0; fi
   git commit -q -m 'ubuntu worker [$LANE]: $BRANCH'
