@@ -61,11 +61,20 @@ Below the palette, three tools:
 
 ## Exporting
 
+**Code**
 - **Copy CSS** / **.css** — CSS custom properties (`--color-1`, or semantic
   names like `--color-bg` when roles exist). Set the variable prefix inline.
 - **.jpg** — a shareable image of the palette with hex labels.
 - **.ase** — Adobe Swatch Exchange, importable into Photoshop/Illustrator and
   other design tools.
+
+**Report**
+- **MD** (copy) / **.md** — a Markdown analysis with a color table (all formats
+  + coverage + role), harmony suggestions, an accessibility line, and a raw JSON
+  block. Great to **paste into an AI** ("analyze this palette / suggest a UI
+  theme…") — the JSON block gives it structured data to reason over.
+- **.html** — a polished, self-contained HTML report (opens offline, printable)
+  for sharing with people who just want to *see* the palette and its details.
 
 ## History
 

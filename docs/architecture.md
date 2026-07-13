@@ -86,6 +86,10 @@ the UI as suggestions, never guarantees.
   mono/analogous/complementary/triadic; conversions via culori for accuracy.
 - **ASE export** ([`export-ase.ts`](../src/lib/export-ase.ts)) — hand-written
   big-endian binary writer (`ASEF` signature, UTF-16BE names, float32 RGB).
+- **Report export** ([`export-md.ts`](../src/lib/export-md.ts) /
+  [`export-html.ts`](../src/lib/export-html.ts)) — a Markdown analysis (tables +
+  harmony + accessibility + a raw JSON block for AI input) and a self-contained,
+  inline-styled HTML report. Both reuse the harmony/contrast/convert libs.
 - **Mood** ([`mood.ts`](../src/lib/mood.ts)) — rule-based labels from circular
   mean hue, saturation, lightness spread; fully offline.
 - **Live theming** ([`theme.ts`](../src/lib/theme.ts)) — derives the panel's

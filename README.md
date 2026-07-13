@@ -21,7 +21,7 @@ micro-interactions throughout.
 | **Harmony** | Monochromatic · Analogous · Complementary · Triadic generators |
 | **Contrast** | WCAG 2.x contrast ratio + AA / AA-Large / AAA / AAA-Large badges with live preview |
 | **Copy** | One-click HEX / RGB / HSL / CMYK (CMYK labeled *approximate*) |
-| **Export** | JPEG (with hex labels), CSS variables (copy or download), and Adobe `.ase` |
+| **Export** | JPEG (with hex labels), CSS variables, Adobe `.ase`, **Markdown report** (AI-ready), and a self-contained **HTML report** |
 | **History** | Last 50 palettes saved to `chrome.storage.local` (no account, no sync) |
 | **Mood** | Rule-based, offline mood labels (Minimal, Tech, Playful, Vintage…) |
 
