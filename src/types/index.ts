@@ -91,7 +91,9 @@ export type Msg =
   | {
       type: 'FETCH_IMAGE_RESULT';
       ok: boolean;
-      buffer?: ArrayBuffer;
+      // Image bytes as base64 — an ArrayBuffer can't survive JSON message
+      // serialization through chrome.runtime.sendMessage.
+      dataBase64?: string;
       mime?: string;
       error?: string;
     }

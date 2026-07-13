@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { Globe, Link2, Pipette, ScanLine, Upload } from 'lucide-react';
 import type { Msg } from '@/types';
 import { fromRgb255, parseColor } from '@/lib/convert';
+import { base64ToArrayBuffer } from '@/lib/base64';
 import { usePaletteStore } from '../store/usePaletteStore';
 
 type Tab = 'upload' | 'url' | 'scan';
@@ -52,14 +53,18 @@ export default function InputZone() {
         type: 'FETCH_IMAGE',
         url: value,
       } satisfies Msg)) as Msg;
-      if (res.type === 'FETCH_IMAGE_RESULT' && res.ok && res.buffer) {
+      if (res.type === 'FETCH_IMAGE_RESULT' && res.ok && res.dataBase64) {
         let label = value;
         try {
           label = new URL(value).hostname;
         } catch {
           /* keep raw */
         }
-        await processImage(res.buffer, 'image-url', label);
+        await processImage(
+          base64ToArrayBuffer(res.dataBase64),
+          'image-url',
+          label,
+        );
       } else {
         const error =
           (res.type === 'FETCH_IMAGE_RESULT' && res.error) ||

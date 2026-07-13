@@ -1,4 +1,5 @@
 import type { Msg } from '@/types';
+import { arrayBufferToBase64 } from '@/lib/base64';
 
 // Open the side panel when the toolbar icon is clicked.
 chrome.runtime.onInstalled.addListener(() => {
@@ -30,7 +31,13 @@ async function fetchImage(url: string): Promise<Msg> {
       };
     }
     const buffer = await res.arrayBuffer();
-    return { type: 'FETCH_IMAGE_RESULT', ok: true, buffer, mime };
+    // Encode as base64 — an ArrayBuffer would arrive as {} through messaging.
+    return {
+      type: 'FETCH_IMAGE_RESULT',
+      ok: true,
+      dataBase64: arrayBufferToBase64(buffer),
+      mime,
+    };
   } catch {
     // No URL logging — privacy-first.
     return {
