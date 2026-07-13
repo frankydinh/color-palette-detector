@@ -1,15 +1,21 @@
 import {
   Clipboard,
+  Code,
   FileCode,
   FileImage,
   FileText,
   Globe,
   Package,
+  Sparkles,
 } from 'lucide-react';
 import { generateCss } from '@/lib/export-css';
 import { generateAse } from '@/lib/export-ase';
 import { downloadBlob, exportPaletteImage } from '@/lib/export-image';
-import { generateMarkdown, type ReportMeta } from '@/lib/export-md';
+import {
+  generateAiPrompt,
+  generateMarkdown,
+  type ReportMeta,
+} from '@/lib/export-md';
 import { generateHtmlReport } from '@/lib/export-html';
 import { usePaletteStore } from '../store/usePaletteStore';
 
@@ -37,6 +43,24 @@ export default function ExportMenu() {
     try {
       await navigator.clipboard.writeText(generateMarkdown(colors, meta));
       pushToast('Markdown copied');
+    } catch {
+      pushToast('Copy failed', 'error');
+    }
+  }
+
+  async function copyForAi() {
+    try {
+      await navigator.clipboard.writeText(generateAiPrompt(colors, meta));
+      pushToast('AI prompt copied — paste into any chat');
+    } catch {
+      pushToast('Copy failed', 'error');
+    }
+  }
+
+  async function copyHtml() {
+    try {
+      await navigator.clipboard.writeText(generateHtmlReport(colors, meta));
+      pushToast('HTML copied');
     } catch {
       pushToast('Copy failed', 'error');
     }
@@ -140,14 +164,30 @@ export default function ExportMenu() {
         <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-content-faint">
           Report
         </p>
-        <div className="grid grid-cols-3 gap-2">
+        <button
+          type="button"
+          onClick={() => void copyForAi()}
+          title="Copy a Markdown analysis with a ready-made prompt — paste into any AI chat"
+          className="mb-2 flex w-full items-center justify-center gap-1.5 rounded-lg bg-accent py-2 text-xs font-semibold text-accent-fg transition-opacity hover:opacity-90"
+        >
+          <Sparkles size={14} /> Copy for AI
+        </button>
+        <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={() => void copyMarkdown()}
-            title="Copy a Markdown analysis (great as AI input)"
+            title="Copy the raw Markdown report"
             className="flex items-center justify-center gap-1.5 rounded-lg border border-surface-border bg-surface-raised py-2 text-xs font-medium transition-colors hover:bg-surface-overlay"
           >
-            <Clipboard size={14} /> MD
+            <Clipboard size={14} /> Copy MD
+          </button>
+          <button
+            type="button"
+            onClick={() => void copyHtml()}
+            title="Copy the full HTML report markup"
+            className="flex items-center justify-center gap-1.5 rounded-lg border border-surface-border bg-surface-raised py-2 text-xs font-medium transition-colors hover:bg-surface-overlay"
+          >
+            <Code size={14} /> Copy HTML
           </button>
           <button
             type="button"

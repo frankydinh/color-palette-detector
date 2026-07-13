@@ -111,3 +111,29 @@ export function generateMarkdown(
 
   return out.join('\n');
 }
+
+/**
+ * Wrap the Markdown report with an instruction block so it can be pasted
+ * straight into an AI chat for analysis.
+ */
+export function generateAiPrompt(
+  colors: PaletteColor[],
+  meta: ReportMeta,
+): string {
+  const intro = [
+    'You are a color and brand design expert. Analyze the color palette below and give practical, concise guidance.',
+    '',
+    `Context: extracted from ${describeSource(meta)}.`,
+    '',
+    'Please cover:',
+    '1. The overall mood / brand personality the palette conveys.',
+    '2. Color harmony — is it balanced, and are there any clashes?',
+    '3. Accessibility — flag any text/background pairs that fail WCAG AA.',
+    '4. How to apply it in a UI with the 60-30-10 rule (say which color for background / primary / accent).',
+    '5. Suggested CSS custom properties with semantic names.',
+    '',
+    '---',
+    '',
+  ].join('\n');
+  return intro + generateMarkdown(colors, meta);
+}

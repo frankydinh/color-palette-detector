@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { generateMarkdown, describeSource, type ReportMeta } from '../export-md';
+import {
+  generateAiPrompt,
+  generateMarkdown,
+  describeSource,
+  type ReportMeta,
+} from '../export-md';
 import { fromRgb255 } from '../convert';
 import type { PaletteColor } from '@/types';
 
@@ -62,6 +67,17 @@ describe('generateMarkdown', () => {
     const parsed = JSON.parse(match![1]!) as unknown[];
     expect(Array.isArray(parsed)).toBe(true);
     expect(parsed).toHaveLength(colors.length);
+  });
+
+  it('generateAiPrompt prepends an instruction block then the full report', () => {
+    const prompt = generateAiPrompt(colors, meta);
+    expect(prompt).toContain('color and brand design expert');
+    expect(prompt).toContain('60-30-10');
+    // The full markdown report is still embedded after the instructions.
+    expect(prompt).toContain('# Color Palette — example.com');
+    expect(prompt.indexOf('design expert')).toBeLessThan(
+      prompt.indexOf('# Color Palette'),
+    );
   });
 
   it('notes missing role info when no text/background roles', () => {
