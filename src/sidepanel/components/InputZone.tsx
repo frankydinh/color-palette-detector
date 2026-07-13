@@ -153,24 +153,31 @@ export default function InputZone() {
       )}
 
       {tab === 'url' && (
-        <div className="flex gap-2">
-          <input
-            type="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && void handleUrl()}
-            placeholder="https://example.com/image.jpg"
-            className="min-w-0 flex-1 rounded-lg border border-surface-border bg-surface-raised px-3 py-2 text-sm outline-none placeholder:text-content-faint focus:border-accent"
-          />
-          <button
-            type="button"
-            onClick={() => void handleUrl()}
-            disabled={urlBusy || !url.trim()}
-            className="flex items-center gap-1.5 rounded-lg bg-accent px-3 py-2 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90 disabled:opacity-50"
-          >
-            <Link2 size={14} />
-            Scan
-          </button>
+        <div className="space-y-1.5">
+          <div className="flex gap-2">
+            <input
+              type="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && void handleUrl()}
+              placeholder="https://example.com/image.jpg"
+              className="min-w-0 flex-1 rounded-lg border border-surface-border bg-surface-raised px-3 py-2 text-sm outline-none placeholder:text-content-faint focus:border-accent"
+            />
+            <button
+              type="button"
+              onClick={() => void handleUrl()}
+              disabled={urlBusy || !url.trim()}
+              className="flex items-center gap-1.5 rounded-lg bg-accent px-3 py-2 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              <Link2 size={14} />
+              Scan
+            </button>
+          </div>
+          <p className="text-[11px] text-content-faint">
+            Direct link to an image file (.jpg/.png/.webp). To grab a
+            website's colors, use the <span className="text-content-muted">Scan
+            Page</span> tab.
+          </p>
         </div>
       )}
 

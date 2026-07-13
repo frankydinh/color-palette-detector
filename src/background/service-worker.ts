@@ -19,10 +19,14 @@ async function fetchImage(url: string): Promise<Msg> {
     }
     const mime = res.headers.get('content-type') ?? '';
     if (!mime.startsWith('image/')) {
+      // A web page (HTML) is the common mistake — point the user at Scan Page.
+      const isHtml = mime.includes('html');
       return {
         type: 'FETCH_IMAGE_RESULT',
         ok: false,
-        error: 'URL did not return an image',
+        error: isHtml
+          ? "That's a web page, not an image — use the “Scan Page” tab"
+          : 'URL did not return an image (use a direct .jpg/.png/.webp link)',
       };
     }
     const buffer = await res.arrayBuffer();
